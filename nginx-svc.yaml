@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-app
+  namespace: demo-bma
+spec:
+  selector:
+    app: nginx-app
+  ports:
+  - name: http
+    targetPort: 80
+    port: 80
+  - name: https
+    targetPort: 443
+    port: 443

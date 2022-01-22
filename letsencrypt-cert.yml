@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: labs-1.bmait.com
+  namespace: demo-bma
+spec:
+  secretName: labs-1.bmait.com-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: labs-1.bmait.com
+  dnsNames:
+  - labs-1.bmait.com
