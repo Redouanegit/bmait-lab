@@ -1,20 +1,21 @@
 # Installation de Nginx Ingress Controller en utilisant Helm 3
 
 
-## Ajouter la repo helm de nginx ingress dans le cluster Kubernetes 
+Ajouter la repo helm de nginx ingress dans le cluster Kubernetes 
 
-$helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
-
-#Metre à jour la repo helm
-
+```bash
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+```
+Metre à jour la repo helm
+```bash
 helm repo update
-
-#Installer Nginx Ingress Controller Kubernetes utilisant Helm 3
-
+```
+Installer Nginx Ingress Controller Kubernetes utilisant Helm 3
+```bash
 helm -n demo-bma install ingress-nginx ingress-nginx/ingress-nginx
-
-#Output
-
+```
+Output
+```bash
 NAME: ingress-nginx
 LAST DEPLOYED: Sat Jan 22 07:46:02 2022
 NAMESPACE: demo-bma
@@ -44,7 +45,7 @@ An example Ingress that makes use of the controller:
                   port:
                     number: 80
               path: /
-    '# This section is only required if TLS is to be enabled for the Ingress'
+    # This section is only required if TLS is to be enabled for the Ingress
     tls:
       - hosts:
         - www.example.com
@@ -61,22 +62,24 @@ If TLS is enabled for the Ingress, a Secret containing the certificate and key m
     tls.crt: <base64 encoded cert>
     tls.key: <base64 encoded key>	
   type: kubernetes.io/tls
-
-#Vérifier Nginx ingress Controller
-
-	kubectl get services ingress-nginx-controller
-
-#Output:
-
+```
+Vérifier Nginx ingress Controller
+```bash
+kubectl get services ingress-nginx-controller
+```
+Output:
+```bash
 	NAME                       TYPE           CLUSTER-IP      EXTERNAL-IP     PORT(S)                      AGE
 ingress-nginx-controller   LoadBalancer   10.233.42.123   10.100.100.73   80:30128/TCP,443:30397/TCP   7m33s
-
-#Création du Deployment et du service pour l'application nginx
-
+```
+Création du Deployment et du service pour l'application nginx
+```bash
 kubectl create ns demo-bma
-
+```
+```bash
 sudo vim nginx-deploy.yaml
-
+```
+```bash
 kind: Deployment
 apiVersion: apps/v1
 metadata:
@@ -97,9 +100,11 @@ spec:
       containers:
       - name: nginx
         image: nginx
-
+```
+```bash
 sudo vim nginx-svc.yaml
-
+```
+```bash
 apiVersion: v1
 kind: Service
 metadata:
@@ -115,17 +120,17 @@ spec:
   - name: https
     targetPort: 443
     port: 443
-
-#deployer les ressources Deployment et Service de l'application nginx dans kubernetes
-
+```
+deployer les ressources Deployment et Service de l'application nginx dans kubernetes
+```bash
 kubectl create -f nginx-deploy.yml
-
 kubectl create -f nginx-svc.yml
-
-#Creation de la resourece Ingress est exposition de l'application
-
+```
+Creation de la resourece Ingress est exposition de l'application
+```bash
 sudo vim nginx-ingress.yaml
-
+```
+```bash
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -145,19 +150,21 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-
+```
+```bash
 kubectl create -f nginx-ingress.yaml
+```
+On assume que l'enregistrement CNAME est déja ajouté pour pointer l'URL du Loadbalancer
 
-#On assume que l'enregistrement CNAME est déja ajouté pour pointer l'URL du Loadbalancer
-
-#Installation et configuration de Cret Manager
-
+Installation et configuration de Cret Manager
+```bash
 kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.6.0/cert-manager.yaml
-
-#Configuration de LetsEncrypt issuer 
-
+```
+Configuration de LetsEncrypt issuer 
+```bash
 sudo vim letsencrupt-issuer.yaml
-
+```
+```bash
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
@@ -177,13 +184,15 @@ spec:
     - http01:
         ingress:
           class: nginx
-
+```
+```bash
 kubectl apply -f letsencrypt-issuer.yml
-
-#Creation de Let’s Encrypt TLS Certificate
-
+```
+Creation de Let’s Encrypt TLS Certificate
+```bash
 sudo vim letsencrypt-cert.yml
-
+```
+```bash
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -197,13 +206,15 @@ spec:
   commonName: labs-1.bmait.com
   dnsNames:
   - labs-1.bmait.com
-
+```
+```bash
 kubectl apply -f letsencrypt-cert.yml
-
-#Pointer le certificat de Let’s Encrypt sur Nginx Ingress ressource
-
+```
+Pointer le certificat de Let’s Encrypt sur Nginx Ingress ressource
+```bash
 kubectl edit ingress nginx-ingress
-
+```
+```bash
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -232,7 +243,6 @@ spec:
               number: 80
         path: /
         pathType: Prefix
-
-
+```
 
 
