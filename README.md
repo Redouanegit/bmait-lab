@@ -13,6 +13,9 @@ helm repo update
 ```
 Installer Nginx Ingress Controller Kubernetes utilisant Helm 3
 ```bash
+kubectl create ns demo-bma
+```
+```bash
 helm -n demo-bma install ingress-nginx ingress-nginx/ingress-nginx
 ```
 Output
