@@ -246,5 +246,6 @@ spec:
         path: /
         pathType: Prefix
 ```
+Accéder à l'application via la ressource Nginx Ingress à l'aide de Let's Encrypt
 
-
+https://labs-1.bmait.com
