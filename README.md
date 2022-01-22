@@ -77,9 +77,7 @@ Output:
 ingress-nginx-controller   LoadBalancer   10.233.42.123   10.100.100.73   80:30128/TCP,443:30397/TCP   7m33s
 ```
 Création du Deployment et du service pour l'application nginx
-```bash
-kubectl create ns demo-bma
-```
+
 ```bash
 sudo vim nginx-deploy.yaml
 ```
