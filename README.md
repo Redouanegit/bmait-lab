@@ -221,7 +221,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   annotations:
-    <mark>cert-manager.io/cluster-issuer: letsencrypt-prod</mark>
+    cert-manager.io/cluster-issuer: letsencrypt-prod
     kubernetes.io/ingress.class: nginx
   creationTimestamp: "2022-01-22T13:52:01Z"
   generation: 1
@@ -230,10 +230,10 @@ metadata:
   resourceVersion: "25043451"
   uid: 8824a299-c906-4353-807a-2db8d3a6b87b
 spec:
-  <mark>tls:
+  tls:
   - hosts:
     - labs-1.bmait.com
-    secretName: labs-1.bmait.com-tls</mark>
+    secretName: labs-1.bmait.com-tls
   rules:
   - host: labs-1.bmait.com
     http:
