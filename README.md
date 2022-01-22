@@ -1,10 +1,9 @@
-#Installation de Nginx Ingress Controller en utilisant Helm 3
+# Installation de Nginx Ingress Controller en utilisant Helm 3
 
-```ShellSession
 
-#Ajouter la repo helm de nginx ingress dans le cluster Kubernetes 
+## Ajouter la repo helm de nginx ingress dans le cluster Kubernetes 
 
-helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+$ helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
 
 #Metre à jour la repo helm
 
